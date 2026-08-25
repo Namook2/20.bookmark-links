@@ -22,8 +22,10 @@ export default async function FolderPage(
       <Header />
       <div className="flex min-h-0 flex-1">
         <Sidebar folders={folders} />
-        <main className="flex-1 overflow-y-auto p-6">
-          <h1 className="mb-6 text-xl font-semibold">{folder.name}</h1>
+        <main className="flex-1 overflow-y-auto p-8">
+          <h1 className="mb-8 text-[24px] font-semibold tracking-tight text-[var(--text)]">
+            {folder.name}
+          </h1>
           <LinkGrid links={folderLinks} />
         </main>
       </div>

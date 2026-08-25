@@ -9,7 +9,7 @@ export default function Home() {
       <Header />
       <div className="flex min-h-0 flex-1">
         <Sidebar folders={folders} />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-8">
           <LinkGrid links={links} />
         </main>
       </div>

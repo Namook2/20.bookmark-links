@@ -8,7 +8,10 @@ export default function LinkForm({ folders }: LinkFormProps) {
   return (
     <form className="flex max-w-md flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <label htmlFor="url" className="text-sm font-medium">
+        <label
+          htmlFor="url"
+          className="text-sm font-medium text-[var(--text)]"
+        >
           링크
         </label>
         <input
@@ -16,18 +19,21 @@ export default function LinkForm({ folders }: LinkFormProps) {
           name="url"
           type="url"
           placeholder="https://example.com"
-          className="rounded-lg border border-black/[.08] px-3 py-2 text-sm outline-none focus:border-black/[.24] dark:border-white/[.145] dark:focus:border-white/[.32]"
+          className="input-field rounded-[10px] px-4 py-3 text-[17px] text-[var(--text)] placeholder-[var(--placeholder)]"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="folderId" className="text-sm font-medium">
+        <label
+          htmlFor="folderId"
+          className="text-sm font-medium text-[var(--text)]"
+        >
           폴더
         </label>
         <select
           id="folderId"
           name="folderId"
           defaultValue=""
-          className="rounded-lg border border-black/[.08] px-3 py-2 text-sm outline-none focus:border-black/[.24] dark:border-white/[.145] dark:focus:border-white/[.32]"
+          className="input-field rounded-[10px] px-4 py-3 text-[17px] text-[var(--text)]"
         >
           <option value="" disabled>
             폴더 선택
@@ -41,7 +47,7 @@ export default function LinkForm({ folders }: LinkFormProps) {
       </div>
       <button
         type="submit"
-        className="mt-2 w-full rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc]"
+        className="btn-primary mt-2 w-full rounded-full bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white"
       >
         저장
       </button>

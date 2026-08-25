@@ -2,25 +2,80 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #fbfbfd;
+  --text: #1d1d1f;
+  --text-sub: #6e6e73;
+  --placeholder: #aeaeb2;
+  --border: #d2d2d7;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --divider: #e8e8ed;
+  --error: #ff3b30;
+  --success: #34c759;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-foreground: var(--text);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+a,
+button,
+input,
+select {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.nav-blur {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.sidebar-active {
+  background: var(--text);
+  color: #ffffff;
+}
+
+.sidebar-link:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.folder-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.link-card {
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.link-card:hover {
+  background: #f5f5f7;
+}
+
+.input-field {
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
 }
