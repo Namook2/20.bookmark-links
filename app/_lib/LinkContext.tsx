@@ -10,6 +10,7 @@ type NewLink = Omit<BookmarkLink, "id">;
 type LinkContextValue = {
   links: BookmarkLink[];
   addLink: (link: NewLink) => void;
+  deleteLink: (id: string) => void;
 };
 
 const LinkContext = createContext<LinkContextValue | null>(null);
@@ -27,7 +28,11 @@ export function LinkProvider({ initialLinks, children }: LinkProviderProps) {
     setLinks((prev) => [newLink, ...prev]);
   };
 
-  const value = useMemo(() => ({ links, addLink }), [links]);
+  const deleteLink = (id: string) => {
+    setLinks((prev) => prev.filter((link) => link.id !== id));
+  };
+
+  const value = useMemo(() => ({ links, addLink, deleteLink }), [links]);
 
   return <LinkContext.Provider value={value}>{children}</LinkContext.Provider>;
 }
