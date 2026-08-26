@@ -69,6 +69,28 @@ select {
   background: rgba(0, 0, 0, 0.04);
 }
 
+.folder-delete-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.folder-row:hover .folder-delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.folder-delete-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.folder-row:hover .folder-count {
+  opacity: 0;
+}
+
+.btn-danger:hover {
+  background: #e0342b;
+}
+
 .link-card {
   background: var(--surface);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);

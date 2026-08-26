@@ -8,6 +8,7 @@ import type { Folder } from "@/app/_lib/types";
 type FolderContextValue = {
   folders: Folder[];
   addFolder: (name: string) => void;
+  deleteFolder: (id: string) => void;
 };
 
 const FolderContext = createContext<FolderContextValue | null>(null);
@@ -36,7 +37,14 @@ export function FolderProvider({
     setFolders((prev) => [...prev, newFolder]);
   };
 
-  const value = useMemo(() => ({ folders, addFolder }), [folders]);
+  const deleteFolder = (id: string) => {
+    setFolders((prev) => prev.filter((folder) => folder.id !== id));
+  };
+
+  const value = useMemo(
+    () => ({ folders, addFolder, deleteFolder }),
+    [folders],
+  );
 
   return (
     <FolderContext.Provider value={value}>{children}</FolderContext.Provider>
