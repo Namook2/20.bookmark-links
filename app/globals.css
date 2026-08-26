@@ -69,17 +69,17 @@ select {
   background: rgba(0, 0, 0, 0.04);
 }
 
-.folder-delete-btn {
+.folder-actions {
   opacity: 0;
   pointer-events: none;
 }
 
-.folder-row:hover .folder-delete-btn {
+.folder-row:hover .folder-actions {
   opacity: 1;
   pointer-events: auto;
 }
 
-.folder-delete-btn:hover {
+.folder-action-btn:hover {
   background: rgba(0, 0, 0, 0.06);
 }
 

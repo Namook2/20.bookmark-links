@@ -5,11 +5,13 @@ import FolderListItem from "@/components/FolderListItem";
 
 type FolderListProps = {
   folders: Folder[];
+  onEditClick: (folder: Folder) => void;
   onDeleteClick: (folder: Folder) => void;
 };
 
 export default function FolderList({
   folders,
+  onEditClick,
   onDeleteClick,
 }: FolderListProps) {
   return (
@@ -22,6 +24,7 @@ export default function FolderList({
           <FolderListItem
             key={folder.id}
             folder={folder}
+            onEditClick={onEditClick}
             onDeleteClick={onDeleteClick}
           />
         ))}
