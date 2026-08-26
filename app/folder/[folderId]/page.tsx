@@ -1,21 +1,11 @@
-import { notFound } from "next/navigation";
-
+import FolderPageContent from "@/components/FolderPageContent";
 import Header from "@/components/Header";
-import LinkGrid from "@/components/LinkGrid";
 import Sidebar from "@/components/Sidebar";
-import { folders, links } from "@/app/_lib/mock-data";
 
 export default async function FolderPage(
   props: PageProps<"/folder/[folderId]">,
 ) {
   const { folderId } = await props.params;
-  const folder = folders.find((item) => item.id === folderId);
-
-  if (!folder) {
-    notFound();
-  }
-
-  const folderLinks = links.filter((link) => link.folderId === folderId);
 
   return (
     <>
@@ -23,10 +13,7 @@ export default async function FolderPage(
       <div className="flex min-h-0 flex-1">
         <Sidebar />
         <main className="flex-1 overflow-y-auto p-8">
-          <h1 className="mb-8 text-[24px] font-semibold tracking-tight text-[var(--text)]">
-            {folder.name}
-          </h1>
-          <LinkGrid links={folderLinks} />
+          <FolderPageContent folderId={folderId} />
         </main>
       </div>
     </>

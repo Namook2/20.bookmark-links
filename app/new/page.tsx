@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import LinkForm from "@/components/LinkForm";
 import Sidebar from "@/components/Sidebar";
-import { folders } from "@/app/_lib/mock-data";
 
 export default function NewLink() {
   return (
@@ -14,7 +13,7 @@ export default function NewLink() {
             <h1 className="mb-8 text-[24px] font-semibold tracking-tight text-[var(--text)]">
               새 링크 추가
             </h1>
-            <LinkForm folders={folders} />
+            <LinkForm />
           </div>
         </main>
       </div>

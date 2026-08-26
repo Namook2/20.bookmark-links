@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { Folder } from "@/app/_lib/types";
 
@@ -15,11 +15,7 @@ export default function EditFolderModal({
   onClose,
   onSave,
 }: EditFolderModalProps) {
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    if (folder) setName(folder.name);
-  }, [folder]);
+  const [name, setName] = useState(folder?.name ?? "");
 
   if (!folder) return null;
 

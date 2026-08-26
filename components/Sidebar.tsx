@@ -5,12 +5,14 @@ import Link from "next/link";
 
 import type { Folder } from "@/app/_lib/types";
 import { useFolders } from "@/app/_lib/FolderContext";
+import { useLinks } from "@/app/_lib/LinkContext";
 import DeleteFolderModal from "@/components/DeleteFolderModal";
 import EditFolderModal from "@/components/EditFolderModal";
 import FolderList from "@/components/FolderList";
 
 export default function Sidebar() {
   const { folders, renameFolder, deleteFolder } = useFolders();
+  const { links } = useLinks();
   const [folderToEdit, setFolderToEdit] = useState<Folder | null>(null);
   const [folderToDelete, setFolderToDelete] = useState<Folder | null>(null);
 
@@ -34,10 +36,12 @@ export default function Sidebar() {
       </Link>
       <FolderList
         folders={folders}
+        links={links}
         onEditClick={setFolderToEdit}
         onDeleteClick={setFolderToDelete}
       />
       <EditFolderModal
+        key={folderToEdit?.id ?? "closed"}
         folder={folderToEdit}
         onClose={() => setFolderToEdit(null)}
         onSave={handleConfirmEdit}

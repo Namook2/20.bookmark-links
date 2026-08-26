@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { FolderProvider } from "@/app/_lib/FolderContext";
-import { folders } from "@/app/_lib/mock-data";
+import { LinkProvider } from "@/app/_lib/LinkContext";
+import { folders, links } from "@/app/_lib/mock-data";
 
 export const metadata: Metadata = {
   title: "북마크 링크 테스트",
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <FolderProvider initialFolders={folders}>{children}</FolderProvider>
+        <FolderProvider initialFolders={folders}>
+          <LinkProvider initialLinks={links}>{children}</LinkProvider>
+        </FolderProvider>
       </body>
     </html>
   );

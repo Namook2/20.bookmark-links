@@ -1,7 +1,6 @@
 export type Folder = {
   id: string;
   name: string;
-  count: number;
 };
 
 export type BookmarkLink = {
@@ -10,4 +9,12 @@ export type BookmarkLink = {
   url: string;
   folderId: string;
   description?: string;
+  thumbnail?: string;
+};
+
+export type OgInfo = {
+  url: string;
+  title: string;
+  description: string | null;
+  thumbnail: string | null;
 };

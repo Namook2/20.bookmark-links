@@ -1,16 +1,18 @@
 "use client";
 
-import type { Folder } from "@/app/_lib/types";
+import type { BookmarkLink, Folder } from "@/app/_lib/types";
 import FolderListItem from "@/components/FolderListItem";
 
 type FolderListProps = {
   folders: Folder[];
+  links: BookmarkLink[];
   onEditClick: (folder: Folder) => void;
   onDeleteClick: (folder: Folder) => void;
 };
 
 export default function FolderList({
   folders,
+  links,
   onEditClick,
   onDeleteClick,
 }: FolderListProps) {
@@ -24,6 +26,7 @@ export default function FolderList({
           <FolderListItem
             key={folder.id}
             folder={folder}
+            count={links.filter((link) => link.folderId === folder.id).length}
             onEditClick={onEditClick}
             onDeleteClick={onDeleteClick}
           />

@@ -4,6 +4,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
 import type { Folder } from "@/app/_lib/types";
+import { generateFolderId } from "@/app/_lib/generateFolderId";
 
 type FolderContextValue = {
   folders: Folder[];
@@ -29,13 +30,16 @@ export function FolderProvider({
     const trimmed = name.trim();
     if (!trimmed) return;
 
-    const newFolder: Folder = {
-      id: `folder-${Date.now()}`,
-      name: trimmed,
-      count: 0,
-    };
-
-    setFolders((prev) => [...prev, newFolder]);
+    setFolders((prev) => {
+      const newFolder: Folder = {
+        id: generateFolderId(
+          trimmed,
+          prev.map((folder) => folder.id),
+        ),
+        name: trimmed,
+      };
+      return [...prev, newFolder];
+    });
   };
 
   const renameFolder = (id: string, name: string) => {

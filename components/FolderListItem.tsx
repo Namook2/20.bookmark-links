@@ -6,12 +6,14 @@ import type { Folder } from "@/app/_lib/types";
 
 type FolderListItemProps = {
   folder: Folder;
+  count: number;
   onEditClick: (folder: Folder) => void;
   onDeleteClick: (folder: Folder) => void;
 };
 
 export default function FolderListItem({
   folder,
+  count,
   onEditClick,
   onDeleteClick,
 }: FolderListItemProps) {
@@ -23,7 +25,7 @@ export default function FolderListItem({
       >
         <span>{folder.name}</span>
         <span className="folder-count text-xs text-[var(--text-sub)]">
-          {folder.count}
+          {count}
         </span>
       </Link>
       <div className="folder-actions absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
