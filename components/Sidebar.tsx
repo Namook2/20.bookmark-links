@@ -1,13 +1,13 @@
+"use client";
+
 import Link from "next/link";
 
-import type { Folder } from "@/app/_lib/types";
+import { useFolders } from "@/app/_lib/FolderContext";
 import FolderList from "@/components/FolderList";
 
-type SidebarProps = {
-  folders: Folder[];
-};
+export default function Sidebar() {
+  const { folders } = useFolders();
 
-export default function Sidebar({ folders }: SidebarProps) {
   return (
     <aside className="flex w-56 shrink-0 flex-col gap-6 overflow-y-auto border-r border-[var(--divider)] p-4">
       <Link

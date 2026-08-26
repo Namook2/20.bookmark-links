@@ -48,6 +48,14 @@ select {
   background: var(--accent-hover);
 }
 
+.btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.btn-tertiary:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
 .sidebar-active {
   background: var(--text);
   color: #ffffff;

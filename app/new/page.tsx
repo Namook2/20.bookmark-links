@@ -8,7 +8,7 @@ export default function NewLink() {
     <>
       <Header />
       <div className="flex min-h-0 flex-1">
-        <Sidebar folders={folders} />
+        <Sidebar />
         <main className="flex flex-1 flex-col items-center overflow-y-auto p-8">
           <div className="w-full max-w-md pt-14">
             <h1 className="mb-8 text-[24px] font-semibold tracking-tight text-[var(--text)]">
