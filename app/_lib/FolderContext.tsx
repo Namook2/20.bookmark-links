@@ -3,12 +3,12 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import type { Folder } from "@/app/_lib/types";
-import { generateFolderId } from "@/app/_lib/generateFolderId";
+import type { Folder, FolderRow } from "@/app/_lib/types";
+import { createClient } from "@/utils/supabase/client";
 
 type FolderContextValue = {
   folders: Folder[];
-  addFolder: (name: string) => void;
+  addFolder: (name: string) => Promise<void>;
   renameFolder: (id: string, name: string) => void;
   deleteFolder: (id: string) => void;
 };
@@ -25,21 +25,25 @@ export function FolderProvider({
   children,
 }: FolderProviderProps) {
   const [folders, setFolders] = useState<Folder[]>(initialFolders);
+  const supabase = useMemo(() => createClient(), []);
 
-  const addFolder = (name: string) => {
+  const addFolder = async (name: string) => {
     const trimmed = name.trim();
     if (!trimmed) return;
 
-    setFolders((prev) => {
-      const newFolder: Folder = {
-        id: generateFolderId(
-          trimmed,
-          prev.map((folder) => folder.id),
-        ),
-        name: trimmed,
-      };
-      return [...prev, newFolder];
-    });
+    const { data, error } = await supabase
+      .from("folders")
+      .insert({ name: trimmed })
+      .select("id, name")
+      .single<FolderRow>();
+
+    if (error || !data) {
+      console.error("Failed to save folder:", error?.message);
+      return;
+    }
+
+    const newFolder: Folder = { id: String(data.id), name: data.name };
+    setFolders((prev) => [...prev, newFolder]);
   };
 
   const renameFolder = (id: string, name: string) => {
@@ -51,10 +55,26 @@ export function FolderProvider({
         folder.id === id ? { ...folder, name: trimmed } : folder,
       ),
     );
+
+    supabase
+      .from("folders")
+      .update({ name: trimmed })
+      .eq("id", id)
+      .then(({ error }) => {
+        if (error) console.error("Failed to rename folder:", error.message);
+      });
   };
 
   const deleteFolder = (id: string) => {
     setFolders((prev) => prev.filter((folder) => folder.id !== id));
+
+    supabase
+      .from("folders")
+      .delete()
+      .eq("id", id)
+      .then(({ error }) => {
+        if (error) console.error("Failed to delete folder:", error.message);
+      });
   };
 
   const value = useMemo(

@@ -4,12 +4,14 @@ import { useState } from "react";
 
 type NewFolderModalProps = {
   isOpen: boolean;
+  isSubmitting: boolean;
   onClose: () => void;
   onSave: (name: string) => void;
 };
 
 export default function NewFolderModal({
   isOpen,
+  isSubmitting,
   onClose,
   onSave,
 }: NewFolderModalProps) {
@@ -23,7 +25,7 @@ export default function NewFolderModal({
   };
 
   const handleSave = () => {
-    if (!name.trim()) return;
+    if (!name.trim() || isSubmitting) return;
     onSave(name);
     setName("");
   };
@@ -47,6 +49,7 @@ export default function NewFolderModal({
           onKeyDown={(event) => {
             if (event.key === "Enter") handleSave();
           }}
+          disabled={isSubmitting}
           placeholder="폴더 이름"
           className="input-field mb-6 w-full rounded-[10px] px-4 py-3 text-[17px] text-[var(--text)] placeholder-[var(--placeholder)]"
         />
@@ -54,6 +57,7 @@ export default function NewFolderModal({
           <button
             type="button"
             onClick={handleClose}
+            disabled={isSubmitting}
             className="btn-tertiary rounded-full px-5 py-2.5 text-sm font-medium text-[var(--text-sub)]"
           >
             취소
@@ -61,10 +65,10 @@ export default function NewFolderModal({
           <button
             type="button"
             onClick={handleSave}
-            disabled={!name.trim()}
+            disabled={!name.trim() || isSubmitting}
             className="btn-primary rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white disabled:opacity-30"
           >
-            저장
+            {isSubmitting ? "저장 중..." : "저장"}
           </button>
         </div>
       </div>

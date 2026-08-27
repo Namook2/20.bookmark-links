@@ -9,10 +9,14 @@ import NewFolderModal from "@/components/NewFolderModal";
 
 export default function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { addFolder } = useFolders();
 
-  const handleSave = (name: string) => {
-    addFolder(name);
+  const handleSave = async (name: string) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    await addFolder(name);
+    setIsSubmitting(false);
     setIsModalOpen(false);
   };
 
@@ -33,6 +37,7 @@ export default function Header() {
       </div>
       <NewFolderModal
         isOpen={isModalOpen}
+        isSubmitting={isSubmitting}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
       />

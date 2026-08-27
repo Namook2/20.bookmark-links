@@ -35,7 +35,7 @@ export default function LinkForm() {
 
       const ogInfo: OgInfo = await response.json();
 
-      addLink({
+      await addLink({
         title: ogInfo.title,
         url: ogInfo.url,
         folderId,
@@ -45,7 +45,7 @@ export default function LinkForm() {
 
       router.push(`/folder/${folderId}`);
     } catch {
-      setError("링크 정보를 가져오지 못했습니다. URL을 다시 확인해 주세요.");
+      setError("링크를 저장하지 못했습니다. URL을 다시 확인하고 다시 시도해 주세요.");
     } finally {
       setIsSubmitting(false);
     }

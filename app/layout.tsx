@@ -1,15 +1,50 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { FolderProvider } from "@/app/_lib/FolderContext";
 import { LinkProvider } from "@/app/_lib/LinkContext";
-import { folders, links } from "@/app/_lib/mock-data";
+import type {
+  BookmarkLink,
+  Folder,
+  FolderRow,
+  LinkRow,
+} from "@/app/_lib/types";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
   title: "북마크 링크 테스트",
   description: "북마크 링크를 폴더별로 정리하고 관리하는 서비스",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+
+  const [{ data: folderRows }, { data: linkRows }] = await Promise.all([
+    supabase.from("folders").select("id, name").order("name"),
+    supabase
+      .from("links")
+      .select("id, title, url, folder_id, description, thumbnail")
+      .order("created_at", { ascending: false }),
+  ]);
+
+  const folders: Folder[] = ((folderRows ?? []) as FolderRow[]).map(
+    (row) => ({
+      id: String(row.id),
+      name: row.name,
+    }),
+  );
+  const links: BookmarkLink[] = ((linkRows ?? []) as LinkRow[]).map(
+    (row) => ({
+      id: row.id,
+      title: row.title,
+      url: row.url,
+      folderId: String(row.folder_id),
+      description: row.description ?? undefined,
+      thumbnail: row.thumbnail ?? undefined,
+    }),
+  );
+
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">

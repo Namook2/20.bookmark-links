@@ -12,7 +12,7 @@ import FolderList from "@/components/FolderList";
 
 export default function Sidebar() {
   const { folders, renameFolder, deleteFolder } = useFolders();
-  const { links } = useLinks();
+  const { links, unassignLinksByFolder } = useLinks();
   const [folderToEdit, setFolderToEdit] = useState<Folder | null>(null);
   const [folderToDelete, setFolderToDelete] = useState<Folder | null>(null);
 
@@ -23,6 +23,7 @@ export default function Sidebar() {
 
   const handleConfirmDelete = (folder: Folder) => {
     deleteFolder(folder.id);
+    unassignLinksByFolder(folder.id);
     setFolderToDelete(null);
   };
 
