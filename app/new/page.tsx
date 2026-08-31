@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
+
 import Header from "@/components/Header";
 import LinkForm from "@/components/LinkForm";
 import Sidebar from "@/components/Sidebar";
+import { pageMetadata } from "@/app/_lib/metadata";
+
+export const metadata: Metadata = pageMetadata(
+  "새 링크 추가",
+  "새로운 북마크 링크를 폴더에 추가하세요.",
+);
 
 export default function NewLink() {
   return (

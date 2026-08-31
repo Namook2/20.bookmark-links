@@ -14,11 +14,15 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [agreedToPrivacyPolicy, setAgreedToPrivacyPolicy] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isFormFilled =
-    email.trim() !== "" && password !== "" && passwordConfirm !== "";
+    email.trim() !== "" &&
+    password !== "" &&
+    passwordConfirm !== "" &&
+    agreedToPrivacyPolicy;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -101,6 +105,24 @@ export default function SignupPage() {
               className="input-field rounded-[10px] px-4 py-3 text-[17px] text-[var(--text)] placeholder-[var(--placeholder)]"
             />
           </div>
+          <label className="flex items-start gap-2 text-sm text-[var(--text-sub)]">
+            <input
+              type="checkbox"
+              checked={agreedToPrivacyPolicy}
+              onChange={(event) =>
+                setAgreedToPrivacyPolicy(event.target.checked)
+              }
+              required
+              className="mt-0.5"
+            />
+            <span>
+              [필수]{" "}
+              <Link href="/privacy" className="underline">
+                개인정보 수집·이용
+              </Link>
+              에 동의합니다.
+            </span>
+          </label>
           <button
             type="submit"
             disabled={!isFormFilled || isSubmitting}

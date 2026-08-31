@@ -98,7 +98,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={!isFormFilled || isSubmitting}
-            className="btn-primary mt-2 w-full rounded-[10px] bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white disabled:opacity-30"
+            className="btn-primary mt-2 w-full cursor-pointer rounded-[10px] bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white disabled:cursor-default disabled:opacity-30"
           >
             {isSubmitting ? "로그인 중..." : "로그인"}
           </button>

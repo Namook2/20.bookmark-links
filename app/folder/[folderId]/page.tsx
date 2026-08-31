@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
+
 import FolderPageContent from "@/components/FolderPageContent";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import { pageMetadata } from "@/app/_lib/metadata";
+
+export const metadata: Metadata = pageMetadata(
+  "폴더",
+  "폴더에 저장된 북마크 링크를 확인하세요.",
+);
 
 export default async function FolderPage(
   props: PageProps<"/folder/[folderId]">,

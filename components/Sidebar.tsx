@@ -62,6 +62,12 @@ export default function Sidebar() {
       >
         {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
       </button>
+      <Link
+        href="/privacy"
+        className="w-full rounded-lg px-3 py-2 text-left text-xs text-[var(--text-sub)] hover:underline"
+      >
+        개인정보 처리방침
+      </Link>
       <EditFolderModal
         key={folderToEdit?.id ?? "closed"}
         folder={folderToEdit}

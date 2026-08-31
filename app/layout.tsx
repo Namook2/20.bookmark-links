@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import { FolderProvider } from "@/app/_lib/FolderContext";
 import { LinkProvider } from "@/app/_lib/LinkContext";
+import { pageMetadata, siteName } from "@/app/_lib/metadata";
 import type {
   BookmarkLink,
   Folder,
@@ -11,9 +12,19 @@ import type {
 } from "@/app/_lib/types";
 import { createClient } from "@/utils/supabase/server";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "뷱 마크 Viewk Mark",
-  description: "북마크 링크를 폴더별로 정리하고 관리하는 서비스",
+  metadataBase: new URL(siteUrl),
+  ...pageMetadata(siteName),
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
