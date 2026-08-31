@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { ReactNode } from "react";
 
 import type { BookmarkLink, LinkRow } from "@/app/_lib/types";
@@ -27,6 +34,57 @@ type LinkProviderProps = {
 export function LinkProvider({ initialLinks, children }: LinkProviderProps) {
   const [links, setLinks] = useState<BookmarkLink[]>(initialLinks);
   const supabase = useMemo(() => createClient(), []);
+  const knownUserIdRef = useRef<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    const loadLinks = async (userId: string) => {
+      const { data, error } = await supabase
+        .from("links")
+        .select("id, title, url, folder_id, description, thumbnail")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Failed to load links:", error.message);
+        return;
+      }
+
+      setLinks(
+        ((data ?? []) as LinkRow[]).map((row) => ({
+          id: row.id,
+          title: row.title,
+          url: row.url,
+          folderId: row.folder_id === null ? null : String(row.folder_id),
+          description: row.description ?? undefined,
+          thumbnail: row.thumbnail ?? undefined,
+        })),
+      );
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const userId = session?.user?.id ?? null;
+
+      if (knownUserIdRef.current === undefined) {
+        // First callback reflects the session already used for the initial
+        // server-rendered fetch, so there is nothing new to load yet.
+        knownUserIdRef.current = userId;
+        return;
+      }
+
+      if (userId === knownUserIdRef.current) return;
+      knownUserIdRef.current = userId;
+
+      if (userId) {
+        loadLinks(userId);
+      } else {
+        setLinks([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const addLink = async (link: NewLink) => {
     const { data, error } = await supabase

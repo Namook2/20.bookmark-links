@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,13 +16,11 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (searchParams.get("error") === "kakao") {
-      setErrorMessage("카카오 로그인에 실패했습니다. 다시 시도해 주세요.");
-    }
-  }, [searchParams]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(() =>
+    searchParams.get("error") === "kakao"
+      ? "카카오 로그인에 실패했습니다. 다시 시도해 주세요."
+      : null,
+  );
 
   const isFormFilled = email.trim() !== "" && password !== "";
 
@@ -100,7 +98,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={!isFormFilled || isSubmitting}
-            className="btn-primary mt-2 w-full rounded-full bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white disabled:opacity-30"
+            className="btn-primary mt-2 w-full rounded-[10px] bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white disabled:opacity-30"
           >
             {isSubmitting ? "로그인 중..." : "로그인"}
           </button>
@@ -109,7 +107,7 @@ function LoginForm() {
           type="button"
           onClick={handleKakaoLogin}
           disabled={isSubmitting}
-          className="mt-3 flex w-full items-center justify-center overflow-hidden rounded-[10px] disabled:opacity-30"
+          className="mt-3 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-[10px] disabled:cursor-default disabled:opacity-30"
         >
           <Image
             src="/kakao_login_medium_wide.png"

@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { ReactNode } from "react";
 
 import type { Folder, FolderRow } from "@/app/_lib/types";
@@ -26,6 +33,53 @@ export function FolderProvider({
 }: FolderProviderProps) {
   const [folders, setFolders] = useState<Folder[]>(initialFolders);
   const supabase = useMemo(() => createClient(), []);
+  const knownUserIdRef = useRef<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    const loadFolders = async (userId: string) => {
+      const { data, error } = await supabase
+        .from("folders")
+        .select("id, name")
+        .eq("user_id", userId)
+        .order("name");
+
+      if (error) {
+        console.error("Failed to load folders:", error.message);
+        return;
+      }
+
+      setFolders(
+        ((data ?? []) as FolderRow[]).map((row) => ({
+          id: String(row.id),
+          name: row.name,
+        })),
+      );
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const userId = session?.user?.id ?? null;
+
+      if (knownUserIdRef.current === undefined) {
+        // First callback reflects the session already used for the initial
+        // server-rendered fetch, so there is nothing new to load yet.
+        knownUserIdRef.current = userId;
+        return;
+      }
+
+      if (userId === knownUserIdRef.current) return;
+      knownUserIdRef.current = userId;
+
+      if (userId) {
+        loadFolders(userId);
+      } else {
+        setFolders([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const addFolder = async (name: string) => {
     const trimmed = name.trim();
