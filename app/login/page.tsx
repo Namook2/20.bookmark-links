@@ -1,20 +1,28 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Toast from "@/components/Toast";
 import { createClient } from "@/utils/supabase/client";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("error") === "kakao") {
+      setErrorMessage("카카오 로그인에 실패했습니다. 다시 시도해 주세요.");
+    }
+  }, [searchParams]);
 
   const isFormFilled = email.trim() !== "" && password !== "";
 
@@ -39,11 +47,20 @@ export default function LoginPage() {
     router.push("/");
   };
 
+  const handleKakaoLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
   return (
     <main className="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto p-8">
       <div className="w-full max-w-[360px]">
         <p className="mb-10 text-center text-[24px] font-semibold tracking-tight text-[var(--text)]">
-          북마크 링크
+          뷱 마크 Viewk Mark
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
@@ -88,7 +105,29 @@ export default function LoginPage() {
             {isSubmitting ? "로그인 중..." : "로그인"}
           </button>
         </form>
+        <button
+          type="button"
+          onClick={handleKakaoLogin}
+          disabled={isSubmitting}
+          className="mt-3 flex w-full items-center justify-center overflow-hidden rounded-[10px] disabled:opacity-30"
+        >
+          <Image
+            src="/kakao_login_medium_wide.png"
+            alt="카카오 로그인"
+            width={300}
+            height={45}
+            className="h-auto w-full"
+          />
+        </button>
         <p className="mt-6 text-center text-sm text-[var(--text-sub)]">
+          <Link
+            href="/forgot-password"
+            className="text-[var(--accent)] hover:underline"
+          >
+            비밀번호를 잊으셨나요?
+          </Link>
+        </p>
+        <p className="mt-3 text-center text-sm text-[var(--text-sub)]">
           아직 계정이 없으신가요?{" "}
           <Link
             href="/signup"
@@ -102,5 +141,13 @@ export default function LoginPage() {
         <Toast message={errorMessage} onClose={() => setErrorMessage(null)} />
       )}
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

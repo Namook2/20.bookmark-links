@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header className="nav-blur sticky top-0 z-10 flex h-12 shrink-0 items-center justify-between border-b border-[var(--divider)] px-6">
       <span className="text-[17px] font-semibold tracking-tight text-[var(--text)]">
-        북마크 링크 테스트
+        뷱 마크 Viewk Mark
       </span>
       <div className="flex items-center gap-2">
         <NewFolderButton onClick={() => setIsModalOpen(true)} />

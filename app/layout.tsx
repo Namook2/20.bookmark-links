@@ -12,7 +12,7 @@ import type {
 import { createClient } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
-  title: "북마크 링크 테스트",
+  title: "뷱 마크 Viewk Mark",
   description: "북마크 링크를 폴더별로 정리하고 관리하는 서비스",
 };
 

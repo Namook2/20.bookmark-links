@@ -47,7 +47,7 @@ export default function SignupPage() {
     <main className="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto p-8">
       <div className="w-full max-w-[360px]">
         <p className="mb-10 text-center text-[24px] font-semibold tracking-tight text-[var(--text)]">
-          북마크 링크
+          뷱 마크 Viewk Mark
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
